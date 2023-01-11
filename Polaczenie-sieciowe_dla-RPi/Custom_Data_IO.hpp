@@ -35,6 +35,10 @@ private:
     bool update_recived(sf::Packet& recived_packet);
 
     sf::Packet prepare_packet_to_send();
+
+    bool receive_n_time(sf::Packet& received_packet);
+
+    const int max_number_of_recived_check = 10;
 };
 
 

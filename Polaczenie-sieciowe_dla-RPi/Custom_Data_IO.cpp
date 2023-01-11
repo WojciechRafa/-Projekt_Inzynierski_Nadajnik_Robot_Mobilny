@@ -14,31 +14,20 @@ void Custom_Data_IO::update() {
     if(mode == Pernament_Connector::p_connector_mode::establish_connection){
         Pernament_Connector::update();
         if(get_mode() == Pernament_Connector::p_connector_mode::pernament_communication){
-            update_period_microseconds = 50000;
+            update_period_microseconds = 100000;
         }
         // czas jest aktualziowany w Pernament_Connector::update();
     }else{
         // odbieranie
-        setBlocking(false);
-        sf::Packet recived_packet;
-        auto status = receive(recived_packet);
-        setBlocking(true);
-
-        if(status == sf::Socket::Status::Done){
-            update_recived(recived_packet);
+        sf::Packet received_packet;
+        if(receive_n_time(received_packet)){
+            update_recived(received_packet);
         }
 
         // nadawanie
         auto sended_packet = prepare_packet_to_send();
-        status = send(sended_packet);
+        auto status = send(sended_packet);
 
-
-        // testowe wysyłanie i wyświetlanie
-//        static sf::Int32 data_int = 0;
-//        static float  data_float = 0;
-//
-//        auto status_1 = update_variable_by_name_int("Wiadomosc_int", data_int);
-//        auto status_2 = update_variable_by_name_float("Wiadomosc_float", data_float);
         bool status_1;
         bool status_2;
 
@@ -51,7 +40,7 @@ void Custom_Data_IO::update() {
         }
 
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
-            status_2 = update_variable_by_name_int("Tryb_mocy_prawy_silnik", 1);
+                                                                                                                                                                   status_2 = update_variable_by_name_int("Tryb_mocy_prawy_silnik", 1);
         }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
             status_2 = update_variable_by_name_int("Tryb_mocy_prawy_silnik", -1);
         }else{
@@ -188,4 +177,29 @@ bool Custom_Data_IO::get_variable_by_id_float(const std::string &name, float& va
     }
 
     return false;
+}
+
+bool Custom_Data_IO::receive_n_time(sf::Packet &received_packet) {
+    setBlocking(false);
+
+    bool was_any_good_packet = false;
+    sf::Packet local_packet;
+
+    for(int i = 0; i < max_number_of_recived_check; i++){
+        auto status = receive(local_packet);
+
+        if(status == sf::Socket::Done){
+            if(not local_packet.endOfPacket()) {
+                was_any_good_packet = true;
+                received_packet = local_packet;
+            }else{
+                break;
+            }
+
+        }else{
+            break;
+        }
+    }
+    setBlocking(true);
+    return was_any_good_packet;
 }

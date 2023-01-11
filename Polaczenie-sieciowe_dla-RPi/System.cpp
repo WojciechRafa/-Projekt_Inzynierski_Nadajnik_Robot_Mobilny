@@ -80,28 +80,7 @@ bool System::execute_button_message(Button::Button_Message message) {
 
         case Button::Button_Message::create_new_screen:
             if(connection_list.empty()) {
-                // stare
-//                Custom_Data_IO_Window::message sended_message_1;
-//                Custom_Data_IO_Window::message sended_message_2;
-//
-//                Custom_Data_IO_Window::message recived_message_1;
-//                Custom_Data_IO_Window::message recived_message_2;
-//
-//                sended_message_1.is_int = true;
-//                sended_message_1.name   = "Wiadomosc_int";
-//                sended_message_1.id     = 1;
-//
-//                sended_message_2.is_int = false;
-//                sended_message_2.name   = "Wiadomosc_float";
-//                sended_message_2.id     = 2;
-//
-//                recived_message_1.is_int = true;
-//                recived_message_1.name   = "Wiadomosc_int";
-//                recived_message_1.id     = 1;
-//
-//                recived_message_2.is_int = false;
-//                recived_message_2.name   = "Wiadomosc_float";
-//                recived_message_2.id     = 2;
+
                 Custom_Data_IO_Window::message sended_message_1;
                 Custom_Data_IO_Window::message sended_message_2;
                 Custom_Data_IO_Window::message sended_message_3;
@@ -126,7 +105,7 @@ bool System::execute_button_message(Button::Button_Message message) {
                 recived_message_1.name   = "Moc_lewy_silnik";
                 recived_message_1.id     = 1;
 
-                recived_message_2.is_int = false;
+                recived_message_2.is_int = true;
                 recived_message_2.name   = "Moc_prawy_silnik";
                 recived_message_2.id     = 2;
 
